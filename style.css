@@ -1,0 +1,14 @@
+:root {
+    --background: #000000;
+    --snake: #20b236;
+    --fruit: #d50909;
+}
+
+.centre {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
