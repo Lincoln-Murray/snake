@@ -5,6 +5,7 @@ canvas = null
 ctx = null
 map = []
 head = [0,0]
+snake_direction = 2
 
 addEventListener('DOMContentLoaded', (evt) => {
     canvas = document.getElementById("canvas");
@@ -31,85 +32,72 @@ function resize() {
 }
 
 function start() {
+    generate_fruit()
+    var timer = setInterval(function() {
+        if (game_over === false) {
+            new_frame()
+        }
+    }, 150);
+}
+
+function move_snake() {
+    if (snake_direction === 1 && snake[0][1] != 0) {
+        snake[0][1] -= 1
+    }
+    else if (snake_direction === 2 && snake[0][0] != tile_num-1) {
+        snake[0][0] += 1
+    }
+    else if (snake_direction === 3 && snake[0][1] != tile_num-1) {
+        snake[0][1] += 1
+    }
+    else if (snake_direction === 4 && snake[0][0] != 0) {
+        snake[0][0] -= 1
+    }
+}
+
+function render_frame() {
     for (let y = 0; y < tile_num; y++) {
-        map.push([])
         for (let x = 0; x < tile_num; x++) {
-            if (x === Math.round(tile_num/2) && y === Math.round(tile_num/2)) {
-                map[y].push(2)
-                head = [x,y]
+            if (typeof find_in(snake, [x,y]) === 'number') {
+                ctx.fillStyle = '#20b236'
+            }
+            else if (typeof find_in(fruits, [x,y]) === 'number') {
+                ctx.fillStyle = '#d50909';
             }
             else {
-                map[y].push(0)
-            }
-        }
-    }
-    var timer = setInterval(function() {
-        new_frame(map)
-    }, 50);
-}
-
-function move_snake(frame) {
-    snake_head = frame[head[1]][head[0]]
-    if (snake_head === 1) {
-        if (head[1] != 0) {
-            frame[head[1]][head[0]] = 0
-            head[1] -= 1
-            frame[head[1]][head[0]] = 1
-        }
-    }
-    if (snake_head === 2) {
-        if (head[0] != tile_num-1) {
-            frame[head[1]][head[0]] = 0
-            head[0] += 1
-            frame[head[1]][head[0]] = 2
-        }
-    }
-    if (snake_head === 3) {
-        if (head[1] != tile_num-1) {
-            frame[head[1]][head[0]] = 0
-            head[1] += 1
-            frame[head[1]][head[0]] = 3
-        }
-    }
-    if (snake_head === 4) {
-        if (head[0] != 0) {
-            frame[head[1]][head[0]] = 0
-            head[0] -= 1
-            frame[head[1]][head[0]] = 4
-        }
-    }
-}
-
-function render_frame(frame) {
-    for (let y = 0; y < tile_num; y++) {
-        for (let x = 0; x < tile_num; x++) {
-            if (frame[y][x] === 0) {
-                ctx.fillStyle = '#000000'
-            }
-            else if ([1,2,3,4].includes(frame[y][x]) === true) {
-                ctx.fillStyle = '#20b236';
+                ctx.fillStyle = '#000000';
             }
             ctx.fillRect(x*tile_width, y*tile_width, (x+1)*tile_width, (y+1)*tile_width);
         }
     }
 }
 
-function new_frame(frame) {
-    move_snake(frame)
-    render_frame(frame)
+function new_frame() {
+    move_snake()
+    render_frame()
 }
 
 document.addEventListener("keydown", (evt) => {
-    if(evt.code === 'ArrowUp' && map[head[1]][head[0]] != 3) {
-        map[head[1]][head[0]] = 1
+    if(evt.code === 'ArrowUp' && snake_direction != 3) {
+        snake_direction = 1
     }
-    if(evt.code === 'ArrowRight' && map[head[1]][head[0]] != 4) {
-        map[head[1]][head[0]] = 2
+    if(evt.code === 'ArrowRight' && snake_direction != 4) {
+        snake_direction = 2
     }
-    if(evt.code === 'ArrowDown' && map[head[1]][head[0]] != 1) {
-        map[head[1]][head[0]] = 3
+    if(evt.code === 'ArrowDown' && snake_direction != 1) {
+        snake_direction = 3
     }
-    if(evt.code === 'ArrowLeft' && map[head[1]][head[0]] != 2) {
-        map[head[1]][head[0]] = 4
+    if(evt.code === 'ArrowLeft' && snake_direction != 2) {
+        snake_direction = 4
     }
 });
+
+function find_in(array, value) {
+    for(var i=0;i<array.length;i++)
+    {
+        if(array[i][0] === value[0] && array[i][1] === value[1]){
+            return i
+        }
+    }
+    return false
+}
