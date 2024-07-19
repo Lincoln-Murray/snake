@@ -43,7 +43,41 @@ function start() {
             }
         }
     }
-    render_frame
+    var timer = setInterval(function() {
+        new_frame(map)
+    }, 50);
+}
+
+function move_snake(frame) {
+    snake_head = frame[head[1]][head[0]]
+    if (snake_head === 1) {
+        if (head[1] != 0) {
+            frame[head[1]][head[0]] = 0
+            head[1] -= 1
+            frame[head[1]][head[0]] = 1
+        }
+    }
+    if (snake_head === 2) {
+        if (head[0] != tile_num-1) {
+            frame[head[1]][head[0]] = 0
+            head[0] += 1
+            frame[head[1]][head[0]] = 2
+        }
+    }
+    if (snake_head === 3) {
+        if (head[1] != tile_num-1) {
+            frame[head[1]][head[0]] = 0
+            head[1] += 1
+            frame[head[1]][head[0]] = 3
+        }
+    }
+    if (snake_head === 4) {
+        if (head[0] != 0) {
+            frame[head[1]][head[0]] = 0
+            head[0] -= 1
+            frame[head[1]][head[0]] = 4
+        }
+    }
 }
 
 function render_frame(frame) {
@@ -59,3 +93,23 @@ function render_frame(frame) {
         }
     }
 }
+
+function new_frame(frame) {
+    move_snake(frame)
+    render_frame(frame)
+}
+
+document.addEventListener("keydown", (evt) => {
+    if(evt.code === 'ArrowUp' && map[head[1]][head[0]] != 3) {
+        map[head[1]][head[0]] = 1
+    }
+    if(evt.code === 'ArrowRight' && map[head[1]][head[0]] != 4) {
+        map[head[1]][head[0]] = 2
+    }
+    if(evt.code === 'ArrowDown' && map[head[1]][head[0]] != 1) {
+        map[head[1]][head[0]] = 3
+    }
+    if(evt.code === 'ArrowLeft' && map[head[1]][head[0]] != 2) {
+        map[head[1]][head[0]] = 4
+    }
+});
