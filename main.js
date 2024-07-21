@@ -3,9 +3,11 @@ tile_num = 20
 
 canvas = null
 ctx = null
-map = []
-head = [0,0]
+snake = [[10,10], [9,10], [8,10], [7,10]]
 snake_direction = 2
+fruits = []
+snake_grow = false
+game_over = false
 
 addEventListener('DOMContentLoaded', (evt) => {
     canvas = document.getElementById("canvas");
@@ -41,17 +43,66 @@ function start() {
 }
 
 function move_snake() {
-    if (snake_direction === 1 && snake[0][1] != 0) {
-        snake[0][1] -= 1
+    if (snake_grow === true) {
+        snake_grow = false
+        new_piece = [snake[snake.length-1][0], snake[snake.length-1][1]]
     }
-    else if (snake_direction === 2 && snake[0][0] != tile_num-1) {
-        snake[0][0] += 1
+    else {
+        new_piece = null
     }
-    else if (snake_direction === 3 && snake[0][1] != tile_num-1) {
-        snake[0][1] += 1
+    if (snake_direction === 1) {
+        if (snake[0][1] != 0) {
+            for (let s = snake.length-1; s > 0; s--) {
+                snake[s][0] = snake[s-1][0]
+                snake[s][1] = snake[s-1][1]
+            }
+            snake[0][1] -= 1
+        }
+        else {
+            game_over = true
+        }
     }
-    else if (snake_direction === 4 && snake[0][0] != 0) {
-        snake[0][0] -= 1
+    else if (snake_direction === 2) {
+        if (snake[0][0] != tile_num-1) {
+            for (let s = snake.length-1; s > 0; s--) {
+                snake[s][0] = snake[s-1][0]
+                snake[s][1] = snake[s-1][1]
+            }
+            snake[0][0] += 1
+        }
+        else {
+            game_over = true
+        }
+    }
+    else if (snake_direction === 3) {
+        if (snake[0][1] != tile_num-1) {
+            for (let s = snake.length-1; s > 0; s--) {
+                snake[s][0] = snake[s-1][0]
+                snake[s][1] = snake[s-1][1]
+            }
+            snake[0][1] += 1
+        }
+        else {
+            game_over = true
+        }
+    }
+    else if (snake_direction === 4) {
+        if (snake[0][0] != 0) {
+            for (let s = snake.length-1; s > 0; s--) {
+                snake[s][0] = snake[s-1][0]
+                snake[s][1] = snake[s-1][1]
+            }
+            snake[0][0] -= 1
+        }
+        else {
+            game_over = true
+        }
+    }
+    if (new_piece != null) {
+        snake.push([new_piece[0], new_piece[1]])
+    }
+    if (typeof find_in(fruits, snake[0]) === 'number') {
+        remove_fruit(snake[0][0], snake[0][1])
     }
 }
 
@@ -100,4 +151,30 @@ function find_in(array, value) {
         }
     }
     return false
+}
+
+function remove_fruit(x,y) {
+    index = find_in(fruits, [x,y])
+    fruits.splice(index, 1)
+    snake_grow = true
+    if ((fruits.length+snake.length) < (tile_num*tile_num)) {
+        generate_fruit()
+    }
+}
+
+function generate_fruit() {
+    while (true) {
+        let x = Math.floor(Math.random()*tile_num)
+        let y = Math.floor(Math.random()*tile_num)
+        if (x === tile_num) {
+            x -= 1
+        }
+        if (y === tile_num) {
+            y -= 1
+        }
+        if (find_in(snake, [x, y]) === false && find_in(fruits, [x, y]) === false) {
+            fruits.push([x,y])
+            break
+        }
+    }
 }
