@@ -118,7 +118,7 @@ function render_frame() {
             else {
                 ctx.fillStyle = '#000000';
             }
-            ctx.fillRect(x*tile_width, y*tile_width, (x+1)*tile_width, (y+1)*tile_width);
+            ctx.fillRect(Math.floor(x*tile_width), Math.floor(y*tile_width), Math.floor((x+1)*tile_width), Math.floor((y+1)*tile_width));
         }
     }
 }
