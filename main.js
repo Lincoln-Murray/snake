@@ -51,7 +51,7 @@ function move_snake() {
         new_piece = null
     }
     if (snake_direction === 1) {
-        if (snake[0][1] != 0) {
+        if (snake[0][1] != 0 && find_in(snake, [snake[0][0],snake[0][1]-1]) === false) {
             for (let s = snake.length-1; s > 0; s--) {
                 snake[s][0] = snake[s-1][0]
                 snake[s][1] = snake[s-1][1]
@@ -63,7 +63,7 @@ function move_snake() {
         }
     }
     else if (snake_direction === 2) {
-        if (snake[0][0] != tile_num-1) {
+        if (snake[0][0] != tile_num-1&& find_in(snake, [snake[0][0]+1,snake[0][1]]) === false) {
             for (let s = snake.length-1; s > 0; s--) {
                 snake[s][0] = snake[s-1][0]
                 snake[s][1] = snake[s-1][1]
@@ -75,7 +75,7 @@ function move_snake() {
         }
     }
     else if (snake_direction === 3) {
-        if (snake[0][1] != tile_num-1) {
+        if (snake[0][1] != tile_num-1&& find_in(snake, [snake[0][0],snake[0][1]+1]) === false) {
             for (let s = snake.length-1; s > 0; s--) {
                 snake[s][0] = snake[s-1][0]
                 snake[s][1] = snake[s-1][1]
@@ -87,7 +87,7 @@ function move_snake() {
         }
     }
     else if (snake_direction === 4) {
-        if (snake[0][0] != 0) {
+        if (snake[0][0] != 0&& find_in(snake, [snake[0][0]-1,snake[0][1]]) === false) {
             for (let s = snake.length-1; s > 0; s--) {
                 snake[s][0] = snake[s-1][0]
                 snake[s][1] = snake[s-1][1]
