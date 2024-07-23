@@ -3,11 +3,13 @@ tile_num = 20
 
 canvas = null
 ctx = null
-snake = [[10,10], [9,10], [8,10], [7,10]]
+snake = [[10,10]]
 snake_direction = 2
 fruits = []
 snake_grow = false
 game_over = false
+frame_time = 150
+gradient = -1.125/(tile_num*tile_num-1)
 
 addEventListener('DOMContentLoaded', (evt) => {
     canvas = document.getElementById("canvas");
@@ -39,7 +41,7 @@ function start() {
         if (game_over === false) {
             new_frame()
         }
-    }, 150);
+    }, frame_time);
 }
 
 function move_snake() {
@@ -99,6 +101,7 @@ function move_snake() {
         }
     }
     if (new_piece != null) {
+        frame_time = (gradient)*snake.length+144
         snake.push([new_piece[0], new_piece[1]])
     }
     if (typeof find_in(fruits, snake[0]) === 'number') {
