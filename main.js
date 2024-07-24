@@ -10,6 +10,7 @@ snake_grow = false
 game_over = false
 frame_time = 150
 gradient = -1.125/(tile_num*tile_num-1)
+can_move = true
 
 addEventListener('DOMContentLoaded', (evt) => {
     canvas = document.getElementById("canvas");
@@ -127,22 +128,29 @@ function render_frame() {
 }
 
 function new_frame() {
+    can_move = true
     move_snake()
     render_frame()
 }
 
 document.addEventListener("keydown", (evt) => {
-    if(evt.code === 'ArrowUp' && snake_direction != 3) {
-        snake_direction = 1
-    }
-    if(evt.code === 'ArrowRight' && snake_direction != 4) {
-        snake_direction = 2
-    }
-    if(evt.code === 'ArrowDown' && snake_direction != 1) {
-        snake_direction = 3
-    }
-    if(evt.code === 'ArrowLeft' && snake_direction != 2) {
-        snake_direction = 4
+    if (can_move === true) {
+        can_move = false
+        if((evt.code === 'ArrowUp' || evt.code === 'KeyW') && snake_direction != 3) {
+            snake_direction = 1
+        }
+        else if((evt.code === 'ArrowRight' || evt.code === 'KeyD') && snake_direction != 4) {
+            snake_direction = 2
+        }
+        else if((evt.code === 'ArrowDown' || evt.code === 'KeyS') && snake_direction != 1) {
+            snake_direction = 3
+        }
+        else if((evt.code === 'ArrowLeft' || evt.code === 'KeyA') && snake_direction != 2) {
+            snake_direction = 4
+        }
+        else {
+            can_move = true
+        }
     }
 });
 
