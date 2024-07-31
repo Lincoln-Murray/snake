@@ -42,6 +42,15 @@ function start() {
         if (game_over === false) {
             new_frame()
         }
+        else {
+            ctx.fillStyle = '#000000'
+            ctx.fillRect(0,0,document.getElementById('canvas').width, document.getElementById('canvas').height)
+            ctx.fillStyle = '#d50909';
+            ctx.font = document.getElementById('canvas').width/3 + 'px sans-serif'
+            ctx.fillText('Game Over', 0, document.getElementById('canvas').height/2, document.getElementById('canvas').width-10)
+            ctx.font = document.getElementById('canvas').width/6 + 'px sans-serif'
+            ctx.fillText('Score: ' + (10*snake.length-10), document.getElementById('canvas').width/4, document.getElementById('canvas').height*5/8, document.getElementById('canvas').width/2)
+        }
     }, frame_time);
 }
 
