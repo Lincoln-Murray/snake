@@ -143,6 +143,14 @@ function new_frame() {
 }
 
 document.addEventListener("keydown", (evt) => {
+    if (evt.code === 'Space') {
+        snake = [[10,10]]
+        snake_direction = 2
+        fruits = []
+        snake_grow = false
+        game_over = false
+        frame_time = 150
+    }
     if (can_move === true) {
         can_move = false
         if((evt.code === 'ArrowUp' || evt.code === 'KeyW') && snake_direction != 3) {
