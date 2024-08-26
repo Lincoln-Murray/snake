@@ -150,6 +150,7 @@ document.addEventListener("keydown", (evt) => {
         snake_grow = false
         game_over = false
         frame_time = 150
+        generate_fruit()
     }
     if (can_move === true) {
         can_move = false
